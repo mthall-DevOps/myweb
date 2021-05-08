@@ -1,0 +1,19 @@
+pipeline{
+agent any
+	stages{
+		stage('Build and Package'){
+			steps{
+			echo 'Building and packaging the code using Maven'
+				powershell 'mvn clean package'
+				}
+		
+			post{
+			success{
+			echo 'Archiving the package.....'
+			archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+			}
+
+			}
+			}
+		}
+}
