@@ -6,13 +6,13 @@ agent any
 				echo "Building and package the code"
 				build 'Job1_Build_Package'
 				}
+		}
 		stage('Deploy to Tomcat'){
 			steps{
 				echo "Deploying to Server...."
 				build 'Job2_Deploy_to_Tomcat'
 				}
 			
-			}
 		}
 }
 }
