@@ -10,7 +10,7 @@ agent any
 			post{
 			success{
 			echo 'Archiving the package.....'
-			archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+			archiveArtifacts artifacts: '**/*.war', followSymlinks: false
 			}
 
 			}
