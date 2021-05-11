@@ -1,5 +1,5 @@
 pipeline{
-    agent any
+    agent jenkins-slave-01
     stages{
         stage("Git Checkout"){
             steps{
@@ -16,12 +16,12 @@ pipeline{
             steps{
                 sshagent(['tomcat-new']) {
                 sh """
-                    scp -o StrictHostKeyChecking=no target/myweb.war  ec2-user@15.206.187.122://opt/tomcat9/webapps
+                    scp -o StrictHostKeyChecking=no target/myweb.war  ec2-user@65.0.127.72://opt/tomcat9/webapps
 
                     
-                    ssh ec2-user@15.206.187.122 //opt/tomcat5/bin/shutdown.sh
+                    ssh ec2-user@65.0.127.72 //opt/tomcat5/bin/shutdown.sh
                     
-                    ssh ec2-user@15.206.187.122 //opt/tomcat9/bin/startup.sh
+                    ssh ec2-user@65.0.127.72 //opt/tomcat9/bin/startup.sh
                 
                 """
             }
