@@ -1,11 +1,13 @@
 pipeline{
-    agent {
-  label 'slave1'
-}
+    agent any
+    
+    environment{
+        PATH = "/opt/maven3/bin:$PATH"
+    }
     stages{
         stage("Git Checkout"){
             steps{
-                git credentialsId: 'mani', url: 'https://github.com/mthall-DevOps/myweb.git' 
+                git credentialsId: 'javahome2', url: 'https://github.com/mthall-DevOps/myweb.git' 
             }
         }
         stage("Maven Build"){
@@ -18,12 +20,11 @@ pipeline{
             steps{
                 sshagent(['tomcat-new']) {
                 sh """
-                    scp -o StrictHostKeyChecking=no target/myweb.war  ec2-user@65.0.127.72://opt/tomcat9/webapps
-
+                    scp -o StrictHostKeyChecking=no target/myweb.war  ec2-user@172.31.25.120:/home/ec2-user/apache-tomcat-9.0.45/webapps/
                     
-                    ssh ec2-user@65.0.127.72 /opt/tomcat9/bin/shutdown.sh
+                    ssh ec2-user@172.31.25.120 /home/ec2-user/apache-tomcat-9.0.45/bin/shutdown.sh
                     
-                    ssh ec2-user@65.0.127.72 /opt/tomcat9/bin/startup.sh
+                    ssh ec2-user@172.31.25.120 /home/ec2-user/apache-tomcat-9.0.45/bin/startup.sh
                 
                 """
             }
