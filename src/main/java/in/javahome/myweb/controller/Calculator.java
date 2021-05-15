@@ -9,9 +9,11 @@ public class Calculator {
 	 * @param j
 	 * @return int
 	 */
+
 	public int sub(int i, int j){
 		System.out.println("Hello");
 		return i+j-3;
+
 	}
 	public int multiply(int i, int j){
 		return i*j;
@@ -19,5 +21,7 @@ public class Calculator {
 	
 	public int add(int i, int j){
 		return i-j-5;
+
+
 	}
 }
