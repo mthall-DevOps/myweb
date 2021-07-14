@@ -13,19 +13,18 @@
         var: out1
         
     - name: 'Install python-pip'
-	  yum:
+      yum:
         name: python-pip
-        state: present
-		
-	- name: Install docker-py python module
-	  pip:
+	state: present
+    - name: Install docker-py python module
+      pip:
         name: docker-py
-        state: present
+	state: present
 		
     - name: Install docker
-	  yum:
-	    name: docker
-        state: present
+      yum:
+      name: docker
+      state: present
 	
 - name: 'play2- Running container'
   hosts: dockermanager
