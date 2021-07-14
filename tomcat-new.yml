@@ -19,10 +19,22 @@
   hosts: dockermanager
   become: yes
   tasks:
+    - name: "Build an image and push it to a private repo"
+      docker_image:
+        build:
+          path: /etc/ansible/webapp
+        name: tomcat
+        tag: latest
+      register: out5
+      tags: docker-image-build
+    - debug:
+        var: out5
+
     - name: Restart a container
       docker_container:
-        name: webapp
-        image: mani2595/webapp
+        name: tomcat
+        image: tomcat
+        tag: latest
         state: started
         restart: yes
         ports:
