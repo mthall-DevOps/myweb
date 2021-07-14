@@ -32,7 +32,7 @@
       docker_container:
         name: webapp
         image: mani2595/webapp
-    state: started
-    restart: yes
-    ports:
-     - "8080:8080"
+      state: started
+      restart: yes
+      ports:
+        - "8080:8080"
