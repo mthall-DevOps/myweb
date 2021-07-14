@@ -20,10 +20,6 @@
       pip:
         name: docker-py
         state: present	
-    - name: Install docker
-      yum:
-      name: docker
-      state: present
 - name: 'play2- Running container'
   hosts: dockermanager
   become: yes
