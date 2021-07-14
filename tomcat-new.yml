@@ -19,7 +19,7 @@
     - name: Install docker-py python module
       pip:
         name: docker-py
-	state: present	
+        state: present	
     - name: Install docker
       yum:
       name: docker
