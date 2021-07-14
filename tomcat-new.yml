@@ -11,11 +11,6 @@
         - python-install
     - debug:
         var: out1
-        
-    - name: 'Install python-pip'
-      yum:
-        name: python-pip
-        state: present
     - name: Install docker-py python module
       pip:
         name: docker-py
