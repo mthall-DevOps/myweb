@@ -15,14 +15,26 @@
       pip:
         name: docker-py
         state: present	
+    - name: Copy the war file, dockerfile & training-com.yml to docker master server
+      copy:
+        src: /etc/ansible/webapp/
+        dest: /tmp/webapp/
+        owner: ansible
+        group: root
+        mode: '0777'
+      tags:
+        - copy_code
+
 - name: 'play2- Running container'
   hosts: dockermanager
+  gather_facts: no
   become: yes
   tasks:
-    - name: "Build an image and push it to a private repo"
+    - name: "Build an image "
       docker_image:
         build:
-          path: /etc/ansible/webapp
+          path: /tmp/webapp
+        source: build
         name: tomcat
         tag: latest
       register: out5
@@ -34,8 +46,8 @@
       docker_container:
         name: tomcat
         image: tomcat
-        tag: latest
         state: started
         restart: yes
         ports:
           - "8080:8080"
+
