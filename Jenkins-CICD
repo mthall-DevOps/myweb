@@ -1,0 +1,34 @@
+currentBuild.displayName = "webapp-#"+number
+pipeline{
+    agent any
+    tools {
+        maven 'maven'
+    }
+    environment {
+         DOCKER_TAG = gitversion()
+    }
+    stages{
+        stage("git checkout"){
+            steps{
+                git credentialsId: 'github', 
+                url: 'https://github.com/mthall-DevOps/myweb.git'
+            }
+        stage("maven build"){
+            steps{
+                sh "mvn clean package"
+            }    
+        }
+        stage("ansible-playbook"){
+            steps{
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller', 
+                transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 600000, flatten: true, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//etc//ansible//webapp', remoteDirectorySDF: false, removePrefix: '/target', sourceFiles: '*/*.war,Dockerfile,tomact-new.yml')], 
+                usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true), sshPublisherDesc(configName: 'ansible_controller', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ansible-playbook  //etc//ansible//webapp//tomcat-new.yml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], 
+                usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+            }    
+        }
+    }
+}
+def gitversion(){
+def gitcommitHash = sh returnStdout: true, script: 'git rev-parse --short HEAD'
+return gitcommitHash
+}
