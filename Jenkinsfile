@@ -33,7 +33,7 @@ pipeline{
         }
         stage('Docker container'){
             steps{
-                sh 'docker run -itd -p 8080:8080 mani2595/webapp:${DOCKER_TAG}'
+                sh 'docker run -itd -p 8090:8080 mani2595/webapp:${DOCKER_TAG}'
             }
         }
 
