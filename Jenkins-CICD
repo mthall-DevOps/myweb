@@ -1,11 +1,7 @@
-currentBuild.displayName = "webapp-#"+number
 pipeline{
     agent any
     tools {
         maven 'maven'
-    }
-    environment {
-         DOCKER_TAG = gitversion()
     }
     stages{
         stage("git checkout"){
@@ -28,8 +24,4 @@ pipeline{
             }    
         }
     }
-}
-def gitversion(){
-def gitcommitHash = sh returnStdout: true, script: 'git rev-parse --short HEAD'
-return gitcommitHash
 }
