@@ -40,7 +40,6 @@
       docker_container:
         state: absent
         name: tomcat
-        force: yes
       register: out4
     - debug:
         var: out4
