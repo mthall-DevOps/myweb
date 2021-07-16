@@ -79,6 +79,6 @@
         restart: yes
         ports:
           - "8080:8080"
-        tags:
-          - starting the container
+      tags:
+        - starting the container
 
