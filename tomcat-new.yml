@@ -1,5 +1,6 @@
 - name: 'play1- Installdocker'
   hosts: dockermanager
+  gather_facts: no
   become: yes
   tasks:
     - name: Install Python 3.6
@@ -14,8 +15,13 @@
     - name: Install docker-py python module
       pip:
         name: docker-py
-        state: present	
-    - name: Copy the war file, dockerfile & training-com.yml to docker master server
+        state: present
+      register: out2
+    - debug:
+        var: out2
+      tags:
+        - Install docker dependencies
+    - name: Copy the war file, dockerfile
       copy:
         src: /etc/ansible/webapp/
         dest: /tmp/webapp/
@@ -25,11 +31,33 @@
       tags:
         - copy_code
 
-- name: 'play2- Running container'
+- name: 'play2- Deployment to containers'
   hosts: dockermanager
   gather_facts: no
   become: yes
   tasks:
+    - name : "Remove existing container"
+      docker_container:
+        state: absent
+        name: tomcat
+        force: yes
+      register: out4
+    - debug:
+        var: out4
+      tags:
+        - remove existing container
+
+    - name : "Remove existing docker image"
+      docker_image:
+        state: absent
+        name: tomcat
+        tag: latest
+        force: yes
+      register: out3
+    - debug:
+        var: out3
+      tags:
+        - remove existing docker image
     - name: "Build an image "
       docker_image:
         build:
@@ -41,6 +69,8 @@
       tags: docker-image-build
     - debug:
         var: out5
+      tags:
+        - Build image
 
     - name: Restart a container
       docker_container:
@@ -50,4 +80,6 @@
         restart: yes
         ports:
           - "8080:8080"
+        tags:
+          - starting the container
 
